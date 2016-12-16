@@ -15,6 +15,8 @@ public:
 
 private:
 	GLint uniColor;
+	GLuint texture;
+	GLuint texture2;
 	std::chrono::time_point<std::chrono::steady_clock> t_start;
 };
 
