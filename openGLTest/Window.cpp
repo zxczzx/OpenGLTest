@@ -83,6 +83,9 @@ void Window::destroy()
 
 void Window::create()
 {
+	sf::ContextSettings settings;
+	settings.depthBits = 24; // Request a 24 bits depth buffer
+
 	auto style = (isfullscreen ? sf::Style::Fullscreen : sf::Style::Default);
-	window.create({ windowSize.x, windowSize.y, 32 }, windowTitle, style);
+	window.create({ windowSize.x, windowSize.y, 32 }, windowTitle, style, settings);
 }

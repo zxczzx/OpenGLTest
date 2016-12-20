@@ -11,12 +11,13 @@ Game::Game() :
 	glewExperimental = GL_TRUE;
 	glewInit();
 	glViewport(0, 0, window.getWindowSize().x, window.getWindowSize().y);
+	glEnable(GL_DEPTH_TEST);
 
 	// Reset clock
 	clock.restart();
 
 	// Initialize shape
-	shape = new Triangle();
+	shape = new Triangle(this);
 }
 
 
