@@ -16,6 +16,7 @@ Shapes::Shapes() :
 
 Shapes::~Shapes()
 {
+	delete shader;
 }
 
 void Shapes::handleInput()

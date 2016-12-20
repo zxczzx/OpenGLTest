@@ -2,6 +2,11 @@
 #include <iostream>
 #include <SOIL.h>
 
+// GLM Mathematics
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 Triangle::Triangle() :
 	uniColor(0),
@@ -96,6 +101,9 @@ void Triangle::update()
 
 void Triangle::render()
 {
+	auto t_now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
 	// Render
 	// Clear the colorbuffer
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -112,17 +120,29 @@ void Triangle::render()
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	glUniform1i(glGetUniformLocation(shader->program, "ourTexture2"), 1);
 
+	// Create transformations
+	glm::mat4 transform;
+	transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+	transform = glm::rotate(transform, (GLfloat)time * 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+
+	// Get matrix's uniform location and set matrix
+	GLint transformLoc = glGetUniformLocation(shader->program, "transform");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
 	// Draw the container
 	glUniform1f(glGetUniformLocation(shader->program, "offset"), 0.0f);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	//glDrawElements(GL_TRIANGLE_FAN, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
 
-	//shader->Use();
-	//glUniform1f(glGetUniformLocation(shader->program, "offset"), -0.5f);
-	//glBindVertexArray(vao);
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	transform = glm::mat4(); // Reset it to an identity matrix
+	transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+	//transform = glm::rotate(transform, (GLfloat)time * 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	GLfloat scaleAmount = sin(time);
+	transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	glBindVertexArray(0);
 }

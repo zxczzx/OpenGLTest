@@ -7,7 +7,7 @@ class Triangle : public Shapes
 {
 public:
 	Triangle();
-	~Triangle();
+	~Triangle() override;
 
 	void handleInput() override;
 	void update() override;

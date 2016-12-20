@@ -6,7 +6,7 @@ class Shapes
 {
 public:
 	Shapes();
-	~Shapes();
+	virtual ~Shapes();
 
 	virtual void handleInput();
 	virtual void update();
