@@ -58,6 +58,19 @@ Triangle::Triangle(Game *game) :
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
+	cubePositions = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
+		glm::vec3(2.0f,  5.0f, -15.0f),
+		glm::vec3(-1.5f, -2.2f, -2.5f),
+		glm::vec3(-3.8f, -2.0f, -12.3f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(-1.7f,  3.0f, -7.5f),
+		glm::vec3(1.3f, -2.0f, -2.5f),
+		glm::vec3(1.5f,  2.0f, -2.5f),
+		glm::vec3(1.5f,  0.2f, -1.5f),
+		glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 	// Build and compile our shader program
 	shader = new Shader("VertexSource.glsl", "FragmentSource.glsl");
 
@@ -90,7 +103,7 @@ Triangle::Triangle(Game *game) :
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// Load image, create texture and generate mipmaps
 	int width, height;
-	unsigned char* image = SOIL_load_image("screenshot000.png", &width, &height, 0, SOIL_LOAD_RGB);
+	unsigned char* image = SOIL_load_image("container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -154,10 +167,8 @@ void Triangle::render()
 	glUniform1i(glGetUniformLocation(shader->program, "ourTexture2"), 1);
 
 	// Create transformations
-	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
-	model = glm::rotate(model, time, glm::vec3(0.5f, 1.0f, 0.0f));
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	projection = glm::perspective(45.0f, static_cast<float>(_game->getWindow()->getWindowSize().x / _game->getWindow()->getWindowSize().y), 0.1f, 100.0f);
@@ -167,12 +178,26 @@ void Triangle::render()
 	GLint viewLoc = glGetUniformLocation(shader->program, "view");
 	GLint projLoc = glGetUniformLocation(shader->program, "projection");
 	// Pass them to the shaders
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 	// Draw the container
 	glBindVertexArray(vao);
+
+	for (GLuint i = 0; i < 10; ++i)
+	{
+		glm::mat4 model;
+		model = glm::translate(model, cubePositions[i]);
+		GLfloat angle = 20.0f * i;
+		if (i % 3 == 0)  // Every 3rd iteration (including the first) we set the angle using GLFW's time function.
+			angle = glm::radians(time) * 25.0f;
+		model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	glBindVertexArray(0);
