@@ -119,6 +119,21 @@ Triangle::Triangle(Game *game) :
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	yaw = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
+	pitch = 0.0f;
+	lastX = _game->getWindow()->getWindowSize().x / 2.0;
+	lastY = _game->getWindow()->getWindowSize().y / 2.0;
+	fov = 45.0f;
+
+	deltaTime = 0.0f;	// Time between current frame and last frame
+	lastFrame = 0.0f;  	// Time of last frame
+
+	firstMouse = true;
 }
 
 
@@ -134,6 +149,61 @@ Triangle::~Triangle()
 
 void Triangle::handleInput()
 {
+	auto t_now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
+	deltaTime = time - lastFrame;
+	lastFrame = time;
+
+	GLfloat cameraSpeed = 5.0f * deltaTime;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
+	{
+		cameraPos += cameraSpeed * cameraFront;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) 
+	{
+		cameraPos -= cameraSpeed * cameraFront;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	}
+	
+	if (firstMouse)
+	{
+		lastX = sf::Mouse::getPosition().x;
+		lastY = sf::Mouse::getPosition().y;
+		firstMouse = false;
+	}
+
+	GLfloat xoffset = sf::Mouse::getPosition().x - lastX;
+	GLfloat yoffset = lastY - sf::Mouse::getPosition().y; // Reversed since y-coordinates go from bottom to left
+	lastX = sf::Mouse::getPosition().x;
+	lastY = sf::Mouse::getPosition().y;
+
+	GLfloat sensitivity = 0.05;	// Change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// Make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
 }
 
 void Triangle::update()
@@ -162,22 +232,25 @@ void Triangle::render()
 	glUniform1i(glGetUniformLocation(shader->program, "ourTexture2"), 1);
 
 	// Create transformations
-	//glm::mat4 view;
+	glm::mat4 view;
 	glm::mat4 projection;
 	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-	glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+	
+	
 
-	GLfloat radius = 10.0f;
-	GLfloat camX = sin(time) * radius;
-	GLfloat camZ = cos(time) * radius;
-	glm::mat4 view;
-	view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	//glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+	//glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+	//glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+
+	//GLfloat radius = 10.0f;
+	//GLfloat camX = sin(time) * radius;
+	//GLfloat camZ = cos(time) * radius;
+	//glm::mat4 view;
+	//view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	projection = glm::perspective(45.0f, static_cast<float>(_game->getWindow()->getWindowSize().x / _game->getWindow()->getWindowSize().y), 0.1f, 100.0f);

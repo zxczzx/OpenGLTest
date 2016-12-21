@@ -28,6 +28,7 @@ Game::~Game()
 
 void Game::handleInput()
 {
+	shape->handleInput();
 }
 
 void Game::update()
