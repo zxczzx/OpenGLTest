@@ -3,7 +3,6 @@
 #include "Shader.h"
 #include "Game.h"
 #include <chrono>
-#include <glm/glm.hpp>
 #include <vector>
 
 class Triangle : public Shapes
