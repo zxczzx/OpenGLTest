@@ -24,7 +24,7 @@ public:
 private:
 	Window window;
 	Shapes *shape;
-	Shader *shader;
+	//Shader *shader;
 	sf::Clock clock;
 	float elapsed;
 };

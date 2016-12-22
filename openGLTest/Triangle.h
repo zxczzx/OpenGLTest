@@ -9,7 +9,7 @@
 class Triangle : public Shapes
 {
 public:
-	Triangle(Game *game, Shader *sh);
+	Triangle(Game *game);
 	~Triangle() override;
 
 	void handleInput() override;

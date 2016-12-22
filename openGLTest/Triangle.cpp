@@ -3,11 +3,10 @@
 #include <SOIL.h>
 
 
-Triangle::Triangle(Game *game, Shader *sh) :
+Triangle::Triangle(Game *game) :
 	_game(game),
 	uniColor(0),
-	t_start(std::chrono::high_resolution_clock::now()),
-	shader(sh)
+	t_start(std::chrono::high_resolution_clock::now())
 {
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] = {
@@ -66,6 +65,9 @@ Triangle::Triangle(Game *game, Shader *sh) :
 		glm::vec3(1.5f,  0.2f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
+
+	// Setup and compile our shaders
+	shader = new Shader("VertexSource.glsl", "FragmentSource.glsl");
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
@@ -189,6 +191,13 @@ void Triangle::render()
 	auto t_now = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
 
+	// Clear the colorbuffer
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Activate container
+	shader->Use();
+
 	// Bind Textures using texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -201,12 +210,7 @@ void Triangle::render()
 	glm::mat4 view;
 	glm::mat4 projection;
 
-<<<<<<< Updated upstream
 	view = camera.GetViewMatrix();
-
-=======
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
->>>>>>> Stashed changes
 
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	projection = glm::perspective(camera.Zoom, static_cast<float>(_game->getWindow()->getWindowSize().x / _game->getWindow()->getWindowSize().y), 0.1f, 100.0f);
