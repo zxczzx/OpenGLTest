@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "Window.h"
 #include "Shapes.h"
+#include "Shader.h"
 
 class Game
 {
@@ -23,6 +24,7 @@ public:
 private:
 	Window window;
 	Shapes *shape;
+	Shader *shader;
 	sf::Clock clock;
 	float elapsed;
 };

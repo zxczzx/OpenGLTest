@@ -3,10 +3,11 @@
 #include <SOIL.h>
 
 
-Triangle::Triangle(Game *game) :
+Triangle::Triangle(Game *game, Shader *sh) :
 	_game(game),
 	uniColor(0),
-	t_start(std::chrono::high_resolution_clock::now())
+	t_start(std::chrono::high_resolution_clock::now()),
+	shader(sh)
 {
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] = {
@@ -66,9 +67,6 @@ Triangle::Triangle(Game *game) :
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	// Build and compile our shader program
-	shader = new Shader("VertexSource.glsl", "FragmentSource.glsl");
-
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
@@ -120,20 +118,12 @@ Triangle::Triangle(Game *game) :
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	yaw = -90.0f;	// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
-	pitch = 0.0f;
-	lastX = _game->getWindow()->getWindowSize().x / 2.0;
-	lastY = _game->getWindow()->getWindowSize().y / 2.0;
-	fov = 45.0f;
-
 	deltaTime = 0.0f;	// Time between current frame and last frame
 	lastFrame = 0.0f;  	// Time of last frame
 
 	firstMouse = true;
+
+	camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 }
 
 
@@ -159,19 +149,19 @@ void Triangle::handleInput()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
 	{
-		cameraPos += cameraSpeed * cameraFront;
+		camera.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) 
 	{
-		cameraPos -= cameraSpeed * cameraFront;
+		camera.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		camera.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		camera.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
 	}
 	
 	if (firstMouse)
@@ -186,24 +176,8 @@ void Triangle::handleInput()
 	lastX = sf::Mouse::getPosition().x;
 	lastY = sf::Mouse::getPosition().y;
 
-	GLfloat sensitivity = 0.05;	// Change this value to your liking
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	// Make sure that when pitch is out of bounds, screen doesn't get flipped
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraFront = glm::normalize(front);
+	camera.ProcessMouseMovement(xoffset, yoffset);
+	//camera.ProcessMouseScroll(yoffset);
 }
 
 void Triangle::update()
@@ -214,14 +188,6 @@ void Triangle::render()
 {
 	auto t_now = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-
-	// Render
-	// Clear the colorbuffer
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Activate container
-	shader->Use();
 
 	// Bind Textures using texture units
 	glActiveTexture(GL_TEXTURE0);
@@ -234,33 +200,23 @@ void Triangle::render()
 	// Create transformations
 	glm::mat4 view;
 	glm::mat4 projection;
-	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-	
-	
+<<<<<<< Updated upstream
+	view = camera.GetViewMatrix();
 
+=======
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	//glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-	//glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-	//glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-
-	//GLfloat radius = 10.0f;
-	//GLfloat camX = sin(time) * radius;
-	//GLfloat camZ = cos(time) * radius;
-	//glm::mat4 view;
-	//view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+>>>>>>> Stashed changes
 
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	projection = glm::perspective(45.0f, static_cast<float>(_game->getWindow()->getWindowSize().x / _game->getWindow()->getWindowSize().y), 0.1f, 100.0f);
+	projection = glm::perspective(camera.Zoom, static_cast<float>(_game->getWindow()->getWindowSize().x / _game->getWindow()->getWindowSize().y), 0.1f, 100.0f);
 
 	// Get their uniform location
 	GLint modelLoc = glGetUniformLocation(shader->program, "model");
 	GLint viewLoc = glGetUniformLocation(shader->program, "view");
 	GLint projLoc = glGetUniformLocation(shader->program, "projection");
+
 	// Pass them to the shaders
-	//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -279,8 +235,6 @@ void Triangle::render()
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
-
-	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	glBindVertexArray(0);
 }
