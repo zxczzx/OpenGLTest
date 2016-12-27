@@ -3,12 +3,12 @@
 
 Game::Game() : 
 	elapsed(0.0f), 
-	window("myRPG", sf::Vector2u(800, 600))
+	window("openGLTest", sf::Vector2u(800, 600))
 {
 	window.getRenderWindow()->setMouseCursorVisible(false);
 	//window.getRenderWindow()->setMouseCursorGrabbed(true);
 
-	sf::Mouse::setPosition(sf::Vector2i(400, 300), *dynamic_cast<sf::Window*>(window.getRenderWindow()));
+	sf::Mouse::setPosition(static_cast<sf::Vector2i>(window.getWindowSize()), *dynamic_cast<sf::Window*>(window.getRenderWindow()));
 
 	// Initialize GLEW
 	glewExperimental = GL_TRUE;
@@ -48,7 +48,7 @@ void Game::render()
 	window.beginDraw();
 
 	// Render shape
-	world->render();
+	world->render(window.getWindowSize());
 
 	// Swap buffers
 	window.endDraw();

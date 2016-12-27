@@ -23,7 +23,6 @@ World::World() :
 
 	cube.setup(shader);
 
-
 	deltaTime = 0.0f;	// Time between current frame and last frame
 	lastFrame = 0.0f;  	// Time of last frame
 
@@ -83,7 +82,7 @@ void World::update()
 {
 }
 
-void World::render()
+void World::render(sf::Vector2u windowSize)
 {
 	// Clear the colorbuffer
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -99,7 +98,7 @@ void World::render()
 	view = camera.GetViewMatrix();
 
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	projection = glm::perspective(camera.Zoom, static_cast<float>(800/600), 0.1f, 100.0f);
+	projection = glm::perspective(camera.Zoom, static_cast<float>(windowSize.x / windowSize.y), 0.1f, 100.0f);
 
 	// Get their uniform location
 	GLint viewLoc = glGetUniformLocation(shader->program, "view");

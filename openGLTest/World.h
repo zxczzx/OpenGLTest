@@ -14,7 +14,7 @@ public:
 
 	void handleInput();
 	void update();
-	void render();
+	void render(sf::Vector2u windowSize);
 
 private:
 	Shader *shader;
