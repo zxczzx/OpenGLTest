@@ -4,29 +4,15 @@
 
 Shapes::Shapes() :
 	vao(0),
-	vbo(0),
-	vertexShader(0),
-	fragmentShader(0),
-	shaderProgram(0),
-	posAttrib(0),
-	shader(nullptr)
+	vbo(0)
 {
 }
 
 
 Shapes::~Shapes()
 {
-	delete shader;
 }
 
-void Shapes::handleInput()
-{
-}
-
-void Shapes::update()
-{
-}
-
-void Shapes::render()
+void Shapes::render(glm::vec3 position)
 {
 }

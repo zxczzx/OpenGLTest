@@ -1,10 +1,7 @@
 #pragma once
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <GL/glew.h>
 #include "Window.h"
-#include "Shapes.h"
-#include "Shader.h"
+#include "World.h"
+class World;
 
 class Game
 {
@@ -23,8 +20,7 @@ public:
 
 private:
 	Window window;
-	Shapes *shape;
-	//Shader *shader;
+	World *world;
 	sf::Clock clock;
 	float elapsed;
 };

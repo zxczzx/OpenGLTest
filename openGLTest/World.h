@@ -1,26 +1,22 @@
 #pragma once
-#include "Shapes.h"
 #include "Shader.h"
 #include "Game.h"
 #include "Camera.h"
 #include <chrono>
 #include <vector>
+#include "Cube.h"
 
-class Triangle : public Shapes
+class World 
 {
 public:
-	Triangle(Game *game);
-	~Triangle() override;
+	World();
+	~World();
 
-	void handleInput() override;
-	void update() override;
-	void render() override;
+	void handleInput();
+	void update();
+	void render();
 
 private:
-	GLint uniColor;
-	GLuint texture;
-	GLuint texture2;
-	Game *_game;
 	Shader *shader;
 	std::vector<glm::vec3> cubePositions;
 	std::chrono::time_point<std::chrono::steady_clock> t_start;
@@ -30,6 +26,7 @@ private:
 	glm::vec3 cameraUp;
 
 	Camera camera;
+	Cube cube;
 
 	GLfloat yaw;
 	GLfloat pitch;

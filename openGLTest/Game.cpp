@@ -1,6 +1,4 @@
 #include "Game.h"
-#include <string>
-#include "Triangle.h"
 
 
 Game::Game() : 
@@ -21,19 +19,19 @@ Game::Game() :
 	// Reset clock
 	clock.restart();
 
-	// Initialize shape
-	shape = new Triangle(this);
+	// Initialize world
+	world = new World();
 }
 
 
 Game::~Game()
 {
-	delete shape;
+	//delete world;
 }
 
 void Game::handleInput()
 {
-	shape->handleInput();
+	world->handleInput();
 }
 
 void Game::update()
@@ -50,7 +48,7 @@ void Game::render()
 	window.beginDraw();
 
 	// Render shape
-	shape->render();
+	world->render();
 
 	// Swap buffers
 	window.endDraw();
