@@ -8,20 +8,25 @@ World::World() :
 	cubePositions = 
 	{
 		glm::vec3(0.0f,  0.0f,  0.0f),
-		glm::vec3(2.0f,  5.0f, -15.0f),
-		glm::vec3(-1.5f, -2.2f, -2.5f),
-		glm::vec3(-3.8f, -2.0f, -12.3f),
-		glm::vec3(2.4f, -0.4f, -3.5f),
-		glm::vec3(-1.7f,  3.0f, -7.5f),
-		glm::vec3(1.3f, -2.0f, -2.5f),
-		glm::vec3(1.5f,  2.0f, -2.5f),
-		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
+		glm::vec3(1.2f, 1.0f, 2.0f),
+		//glm::vec3(2.0f,  5.0f, -15.0f),
+		//glm::vec3(-1.5f, -2.2f, -2.5f),
+		//glm::vec3(-3.8f, -2.0f, -12.3f),
+		//glm::vec3(2.4f, -0.4f, -3.5f),
+		//glm::vec3(-1.7f,  3.0f, -7.5f),
+		//glm::vec3(1.3f, -2.0f, -2.5f),
+		//glm::vec3(1.5f,  2.0f, -2.5f),
+		//glm::vec3(1.5f,  0.2f, -1.5f),
+		//glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	shader = new Shader("VertexSource.glsl", "FragmentSource.glsl");
+	cube.push_back(new Cube(ShapeType::PLAIN));
+	cube.push_back(new Cube(ShapeType::LIGHT));
 
-	cube.setup(shader);
+	for (int i = 0; i < cubePositions.size(); ++i)
+	{
+		cube[i]->setup();
+	}
 
 	deltaTime = 0.0f;	// Time between current frame and last frame
 	lastFrame = 0.0f;  	// Time of last frame
@@ -88,9 +93,6 @@ void World::render(sf::Vector2u windowSize)
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Activate container
-	shader->Use();
-
 	// Create transformations
 	glm::mat4 view;
 	glm::mat4 projection;
@@ -99,17 +101,33 @@ void World::render(sf::Vector2u windowSize)
 
 	// Note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	projection = glm::perspective(camera.Zoom, static_cast<float>(windowSize.x / windowSize.y), 0.1f, 100.0f);
-
-	// Get their uniform location
-	GLint viewLoc = glGetUniformLocation(shader->program, "view");
-	GLint projLoc = glGetUniformLocation(shader->program, "projection");
-
-	// Pass them to the shaders
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
+	
+	//WARNING: TOO MUCH SHADER SWITCHING
 	for (int i = 0; i < cubePositions.size(); ++i)
 	{
-		cube.render(cubePositions[i]);
+		if (cube[i]->getShapeType() == ShapeType::TEXTURED)
+		{
+			cube[i]->getShader()->Use();
+			// Get their uniform location
+			GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
+			GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
+
+			// Pass them to the shaders
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+			cube[i]->render(cubePositions[i]);
+		}
+		else if (cube[i]->getShapeType() == ShapeType::PLAIN || cube[i]->getShapeType() == ShapeType::LIGHT)
+		{
+			cube[i]->getShader()->Use();
+			// Get their uniform location
+			GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
+			GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
+
+			// Pass them to the shaders
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+			cube[i]->render(cubePositions[i]);
+		}
 	}
 }

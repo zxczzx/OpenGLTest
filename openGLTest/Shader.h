@@ -12,6 +12,7 @@ class Shader
 {
 public:
 	// Constructor reads and builds the shader
+	Shader();
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
 	~Shader();
 

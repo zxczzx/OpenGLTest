@@ -158,8 +158,12 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentSource.glsl" />
-    <None Include="VertexSource.glsl" />
+    <None Include="CubePlainFragment.glsl" />
+    <None Include="CubePlainVertex.glsl" />
+    <None Include="CubeTextureFragment.glsl" />
+    <None Include="LampFragment.glsl" />
+    <None Include="LampVertex.glsl" />
+    <None Include="CubeTextureVertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />

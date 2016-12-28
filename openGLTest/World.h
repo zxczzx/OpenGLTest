@@ -1,5 +1,4 @@
 #pragma once
-#include "Shader.h"
 #include "Game.h"
 #include "Camera.h"
 #include <chrono>
@@ -17,7 +16,6 @@ public:
 	void render(sf::Vector2u windowSize);
 
 private:
-	Shader *shader;
 	std::vector<glm::vec3> cubePositions;
 	std::chrono::time_point<std::chrono::steady_clock> t_start;
 
@@ -26,7 +24,7 @@ private:
 	glm::vec3 cameraUp;
 
 	Camera camera;
-	Cube cube;
+	std::vector<Cube*> cube;
 
 	GLfloat yaw;
 	GLfloat pitch;
