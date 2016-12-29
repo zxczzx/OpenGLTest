@@ -1,5 +1,9 @@
 #include "World.h"
 #include <SOIL.h>
+#include <map>
+#include "CubeLight.h"
+#include "CubePlain.h"
+#include "CubeTextured.h"
 
 
 World::World() :
@@ -12,7 +16,7 @@ World::World() :
 		//glm::vec3(2.0f,  5.0f, -15.0f),
 		//glm::vec3(-1.5f, -2.2f, -2.5f),
 		//glm::vec3(-3.8f, -2.0f, -12.3f),
-		//glm::vec3(2.4f, -0.4f, -3.5f),
+		glm::vec3(2.4f, -0.4f, -3.5f),
 		//glm::vec3(-1.7f,  3.0f, -7.5f),
 		//glm::vec3(1.3f, -2.0f, -2.5f),
 		//glm::vec3(1.5f,  2.0f, -2.5f),
@@ -20,8 +24,9 @@ World::World() :
 		//glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	cube.push_back(new Cube(ShapeType::PLAIN));
-	cube.push_back(new Cube(ShapeType::LIGHT));
+	cube.push_back(new CubeTextured());
+	cube.push_back(new CubeLight());
+	cube.push_back(new CubePlain());
 
 	for (int i = 0; i < cubePositions.size(); ++i)
 	{
@@ -90,7 +95,7 @@ void World::update()
 void World::render(sf::Vector2u windowSize)
 {
 	// Clear the colorbuffer
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Create transformations
@@ -105,29 +110,14 @@ void World::render(sf::Vector2u windowSize)
 	//WARNING: TOO MUCH SHADER SWITCHING
 	for (int i = 0; i < cubePositions.size(); ++i)
 	{
-		if (cube[i]->getShapeType() == ShapeType::TEXTURED)
-		{
-			cube[i]->getShader()->Use();
-			// Get their uniform location
-			GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
-			GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
+		cube[i]->getShader()->Use();
+		// Get their uniform location
+		GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
+		GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
 
-			// Pass them to the shaders
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-			cube[i]->render(cubePositions[i]);
-		}
-		else if (cube[i]->getShapeType() == ShapeType::PLAIN || cube[i]->getShapeType() == ShapeType::LIGHT)
-		{
-			cube[i]->getShader()->Use();
-			// Get their uniform location
-			GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
-			GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
-
-			// Pass them to the shaders
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-			cube[i]->render(cubePositions[i]);
-		}
+		// Pass them to the shaders
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		cube[i]->render(cubePositions[i]);
 	}
 }

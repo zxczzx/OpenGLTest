@@ -150,6 +150,9 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="CubeLight.cpp" />
+    <ClCompile Include="CubePlain.cpp" />
+    <ClCompile Include="CubeTextured.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -168,6 +171,9 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeLight.h" />
+    <ClInclude Include="CubePlain.h" />
+    <ClInclude Include="CubeTextured.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Shapes.h" />

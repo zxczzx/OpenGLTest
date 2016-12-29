@@ -1,25 +1,24 @@
 #pragma once
 #include "Shapes.h"
 #include "Shader.h"
+#include <SOIL.h>
 
 class Cube : public Shapes
 {
 public:
-	Cube(ShapeType type);
-	~Cube();
+	Cube();
+	virtual ~Cube();
 
-	void render(glm::vec3 position) override;
+	virtual void render(glm::vec3 position) override;
 
-	void setup();
+	virtual void setup();
 
-	ShapeType getShapeType();
 	Shader *getShader();
 
-private:
+protected:
 	GLint uniColor;
 	GLuint texture;
 	GLuint texture2;
 	Shader *shader;
-	ShapeType shapeType;
 };
 
