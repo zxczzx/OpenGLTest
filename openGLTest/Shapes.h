@@ -13,7 +13,7 @@ public:
 
 	virtual void render(glm::vec3 position);
 
-protected:
+//protected:
 	GLuint vao;
 	GLuint vbo;
 };

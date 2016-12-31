@@ -9,5 +9,8 @@ public:
 
 	void render(glm::vec3 position) override;
 	virtual void setup() override;
+
+private:
+	glm::vec3 lightPos; //temporary value till light class
 };
 

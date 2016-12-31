@@ -110,6 +110,7 @@ CubeTextured::~CubeTextured()
 void CubeTextured::render(glm::vec3 position)
 {
 	GLint modelLoc = glGetUniformLocation(shader->program, "model");
+
 	// Bind Textures using texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
