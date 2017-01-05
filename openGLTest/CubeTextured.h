@@ -1,5 +1,6 @@
 #pragma once
 #include "Cube.h"
+#include <chrono>
 
 class CubeTextured : public Cube
 {
@@ -12,6 +13,6 @@ public:
 
 private:
 	GLuint texture;
-	GLuint texture2;
+	GLuint specularMap;
 };
 

@@ -1,7 +1,6 @@
 #include "CubePlain.h"
 
 
-
 CubePlain::CubePlain()
 {
 	GLfloat vertices[] = {
@@ -76,15 +75,43 @@ CubePlain::~CubePlain()
 
 void CubePlain::render(glm::vec3 position)
 {
+	auto t_now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+
 	GLint modelLoc = glGetUniformLocation(shader->program, "model");
 
 	GLint objectColorLoc = glGetUniformLocation(shader->program, "objectColor");
-	GLint lightColorLoc = glGetUniformLocation(shader->program, "lightColor");
 	GLint lightPosLoc = glGetUniformLocation(shader->program, "lightPos");
 
 	glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
 	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+
+	GLint matAmbientLoc = glGetUniformLocation(shader->program, "material.ambient");
+	GLint matDiffuseLoc = glGetUniformLocation(shader->program, "material.diffuse");
+	GLint matSpecularLoc = glGetUniformLocation(shader->program, "material.specular");
+	GLint matShineLoc = glGetUniformLocation(shader->program, "material.shininess");
+
+	glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+	glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+	glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+	glUniform1f(matShineLoc, 32.0f);
+
+	GLint lightAmbientLoc = glGetUniformLocation(shader->program, "light.ambient");
+	GLint lightDiffuseLoc = glGetUniformLocation(shader->program, "light.diffuse");
+	GLint lightSpecularLoc = glGetUniformLocation(shader->program, "light.specular");
+
+	glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+
+	glm::vec3 lightColor;
+	lightColor.x = sin(time * 2.0f);
+	lightColor.y = sin(time * 0.7f);
+	lightColor.z = sin(time * 1.3f);
+
+	glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f);
+	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+	glUniform3f(lightAmbientLoc, ambientColor.x, ambientColor.y, ambientColor.z);
+	glUniform3f(lightDiffuseLoc, diffuseColor.x, diffuseColor.y, diffuseColor.z);
 
 	glBindVertexArray(vao);
 

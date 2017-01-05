@@ -24,7 +24,9 @@ World::World() :
 		//glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-	cube.push_back(new CubePlain());
+	lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+
+	cube.push_back(new CubeTextured());
 	cube.push_back(new CubeLight());
 	//cube.push_back(new CubeTextured())
 
@@ -115,7 +117,9 @@ void World::render(sf::Vector2u windowSize)
 		GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
 		GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
 		GLint viewPosLoc = glGetUniformLocation(cube[i]->getShader()->program, "viewPos");
+		GLint lightPosLoc = glGetUniformLocation(cube[i]->getShader()->program, "light.position");
 		glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
+		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 
 		// Pass them to the shaders
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));

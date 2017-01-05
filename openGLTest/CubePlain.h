@@ -1,5 +1,6 @@
 #pragma once
 #include "Cube.h"
+#include <chrono>
 
 class CubePlain : public Cube
 {
@@ -12,5 +13,6 @@ public:
 
 private:
 	glm::vec3 lightPos; //temporary value till light class
+	std::chrono::time_point<std::chrono::steady_clock> t_start;
 };
 

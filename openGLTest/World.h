@@ -23,6 +23,9 @@ private:
 	glm::vec3 cameraFront;
 	glm::vec3 cameraUp;
 
+
+	glm::vec3 lightPos; //temporary value till light class
+
 	Camera camera;
 	std::vector<Cube*> cube;
 
