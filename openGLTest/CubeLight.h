@@ -4,10 +4,10 @@
 class CubeLight : public Cube
 {
 public:
-	CubeLight();
-	~CubeLight();
+    CubeLight();
+    ~CubeLight();
 
-	void render(glm::vec3 position) override;
-	virtual void setup() override;
+    void render(glm::vec3 position) override;
+    virtual void setup() override;
 };
 

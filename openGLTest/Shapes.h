@@ -8,13 +8,13 @@
 class Shapes
 {
 public:
-	Shapes();
-	virtual ~Shapes();
+    Shapes();
+    virtual ~Shapes();
 
-	virtual void render(glm::vec3 position);
+    virtual void render(glm::vec3 position);
 
 //protected:
-	GLuint vao;
-	GLuint vbo;
+    GLuint vao;
+    GLuint vbo;
 };
 

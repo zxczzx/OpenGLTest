@@ -8,8 +8,8 @@ Cube::Cube()
 
 Cube::~Cube()
 {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
 }
 
 
@@ -23,5 +23,5 @@ void Cube::setup()
 
 Shader *Cube::getShader()
 {
-	return shader;
+    return shader;
 }

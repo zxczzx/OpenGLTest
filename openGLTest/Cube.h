@@ -6,19 +6,19 @@
 class Cube : public Shapes
 {
 public:
-	Cube();
-	virtual ~Cube();
+    Cube();
+    virtual ~Cube();
 
-	virtual void render(glm::vec3 position) override;
+    virtual void render(glm::vec3 position) override;
 
-	virtual void setup();
+    virtual void setup();
 
-	Shader *getShader();
+    Shader *getShader();
 
 protected:
-	GLint uniColor;
-	GLuint texture;
-	GLuint texture2;
-	Shader *shader;
+    GLint uniColor;
+    GLuint texture;
+    GLuint texture2;
+    Shader *shader;
 };
 

@@ -3,8 +3,8 @@
 
 
 Shapes::Shapes() :
-	vao(0),
-	vbo(0)
+    vao(0),
+    vbo(0)
 {
 }
 

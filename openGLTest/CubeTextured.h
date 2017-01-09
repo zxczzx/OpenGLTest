@@ -5,14 +5,16 @@
 class CubeTextured : public Cube
 {
 public:
-	CubeTextured();
-	~CubeTextured();
+    CubeTextured();
+    ~CubeTextured();
 
-	void render(glm::vec3 position) override;
-	virtual void setup() override;
+    void render(glm::vec3 position) override;
+    virtual void setup() override;
+
+    int number;
 
 private:
-	GLuint texture;
-	GLuint specularMap;
+    GLuint texture;
+    GLuint specularMap;
 };
 

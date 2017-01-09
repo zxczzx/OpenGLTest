@@ -11,16 +11,16 @@
 class Shader
 {
 public:
-	// Constructor reads and builds the shader
-	Shader();
-	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
-	~Shader();
+    // Constructor reads and builds the shader
+    Shader();
+    Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+    ~Shader();
 
-	// Use the program
-	void Use();
+    // Use the program
+    void Use();
 
-	// The program ID
-	GLuint program;
+    // The program ID
+    GLuint program;
 };
 
 #endif

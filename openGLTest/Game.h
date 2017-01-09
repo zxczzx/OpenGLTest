@@ -6,22 +6,22 @@ class World;
 class Game
 {
 public:
-	Game();
-	~Game();
+    Game();
+    ~Game();
 
-	void handleInput();
-	void update();
-	void render();
+    void handleInput();
+    void update();
+    void render();
 
-	void restartClock();
+    void restartClock();
 
-	sf::Time getElapsed();
-	Window *getWindow();
+    sf::Time getElapsed();
+    Window *getWindow();
 
 private:
-	Window window;
-	World *world;
-	sf::Clock clock;
-	float elapsed;
+    Window window;
+    World *world;
+    sf::Clock clock;
+    float elapsed;
 };
 

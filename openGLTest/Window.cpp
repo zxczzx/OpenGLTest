@@ -2,90 +2,90 @@
 
 Window::Window()
 {
-	setup("Window", sf::Vector2u(640, 480));
+    setup("Window", sf::Vector2u(640, 480));
 }
 
 Window::Window(const std::string & title, const sf::Vector2u & size)
 {
-	setup(title, size);
+    setup(title, size);
 }
 
 Window::~Window()
 {
-	destroy();
+    destroy();
 }
 
 void Window::beginDraw()
 {
-	window.clear(sf::Color::Black);
+    window.clear(sf::Color::Black);
 }
 
 void Window::endDraw()
 {
-	window.display();
+    window.display();
 }
 
 void Window::update()
 {
-	if (event.type == sf::Event::Closed) {
-		isdone = true;
-	}
-	else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-		isdone = true;
-	}
+    if (event.type == sf::Event::Closed) {
+        isdone = true;
+    }
+    else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+        isdone = true;
+    }
 }
 
 bool Window::isDone()
 {
-	return isdone;
+    return isdone;
 }
 
 bool Window::isFullscreen()
 {
-	return isfullscreen;
+    return isfullscreen;
 }
 
 sf::Vector2u Window::getWindowSize()
 {
-	return windowSize;
+    return windowSize;
 }
 
 sf::RenderWindow* Window::getRenderWindow()
 {
-	return &window;
+    return &window;
 }
 
 void Window::toggleFullscreen()
 {
-	isfullscreen = !isfullscreen;
-	destroy();
-	create();
+    isfullscreen = !isfullscreen;
+    destroy();
+    create();
 }
 
 void Window::draw(sf::Drawable & drawable)
 {
-	window.draw(drawable);
+    window.draw(drawable);
 }
 
 void Window::setup(const std::string & title, const sf::Vector2u & size)
 {
-	windowTitle = title;
-	windowSize = size;
-	isfullscreen = false;
-	isdone = false;
-	create();
+    windowTitle = title;
+    windowSize = size;
+    isfullscreen = false;
+    isdone = false;
+    create();
 }
 
 void Window::destroy()
 {
-	window.close();
+    window.close();
 }
 
 void Window::create()
 {
-	sf::ContextSettings settings;
-	settings.depthBits = 24; // Request a 24 bits depth buffer
+    sf::ContextSettings settings;
+    settings.depthBits = 24; // Request a 24 bits depth buffer
 
-	auto style = (isfullscreen ? sf::Style::Fullscreen : sf::Style::Default);
-	window.create({ windowSize.x, windowSize.y, 32 }, windowTitle, style, settings);
+    auto style = (isfullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+    window.create({ windowSize.x, windowSize.y, 32 }, windowTitle, style, settings);
 }
