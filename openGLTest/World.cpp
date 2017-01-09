@@ -131,8 +131,7 @@ void World::render(sf::Vector2u windowSize)
         GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
         GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
         GLint viewPosLoc = glGetUniformLocation(cube[i]->getShader()->program, "viewPos");
-        //GLint lightPosLoc = glGetUniformLocation(cube[i]->getShader()->program, "light.position");
-        GLint lightDirPos = glGetUniformLocation(cube[i]->getShader()->program, "light.direction");
+        GLint lightDirPos = glGetUniformLocation(cube[i]->getShader()->program, "light.position");
         glUniform3f(lightDirPos, -0.2f, -1.0f, -0.3f);
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
         //glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);

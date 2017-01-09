@@ -112,6 +112,12 @@ void CubeTextured::render(glm::vec3 position)
     glUniform3f(glGetUniformLocation(shader->program, "light.diffuse"), 0.5f, 0.5f, 0.5f);
     glUniform3f(glGetUniformLocation(shader->program, "light.specular"), 1.0f, 1.0f, 1.0f);
 
+    // Set attenuation properties
+    glUniform1f(glGetUniformLocation(shader->program, "light.constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "light.linear"), 0.09f);
+    glUniform1f(glGetUniformLocation(shader->program, "light.quadric"), 0.032f);
+
+
     GLint modelLoc = glGetUniformLocation(shader->program, "model");
 
     // Bind diffuse map

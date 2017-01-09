@@ -8,6 +8,6 @@ public:
     ~CubeLight();
 
     void render(glm::vec3 position) override;
-    virtual void setup() override;
+    void setup() override;
 };
 
