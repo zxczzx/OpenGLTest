@@ -5,7 +5,7 @@
 class CubePlain : public Cube
 {
 public:
-    CubePlain();
+    CubePlain(std::vector<Light*> lightsVector);
     ~CubePlain();
 
     void update() override;

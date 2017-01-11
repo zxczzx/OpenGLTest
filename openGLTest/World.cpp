@@ -4,6 +4,8 @@
 #include "Shapes/CubeLight.h"
 #include "Shapes/CubePlain.h"
 #include "Shapes/CubeTextured.h"
+#include "Light\DirectionalLight.h"
+#include "Light\PointLight.h"
 
 
 World::World() :
@@ -24,12 +26,24 @@ World::World() :
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
-    lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+    lightPositions = 
+    {
+        glm::vec3(0.7f,  0.2f,  2.0f),
+        glm::vec3(2.3f, -3.3f, -4.0f),
+        glm::vec3(-4.0f,  2.0f, -12.0f),
+        glm::vec3(0.0f,  0.0f, -3.0f)
+    };
+
+    lights.push_back(new DirectionalLight());
+    for (auto& pos : lightPositions)
+    {
+        lights.push_back(new PointLight(pos));
+    }
 
     cube.push_back(new CubeLight());
     for (int i = 1; i < cubePositions.size(); ++i)
     {
-        cube.push_back(new CubeTextured());
+        cube.push_back(new CubeTextured(lights));
     }
 
     for (int i = 0; i < cubePositions.size(); ++i)
@@ -131,10 +145,7 @@ void World::render(sf::Vector2u windowSize)
         GLint viewLoc = glGetUniformLocation(cube[i]->getShader()->program, "view");
         GLint projLoc = glGetUniformLocation(cube[i]->getShader()->program, "projection");
         GLint viewPosLoc = glGetUniformLocation(cube[i]->getShader()->program, "viewPos");
-        GLint lightDirPos = glGetUniformLocation(cube[i]->getShader()->program, "light.position");
-        glUniform3f(lightDirPos, -0.2f, -1.0f, -0.3f);
         glUniform3f(viewPosLoc, camera.Position.x, camera.Position.y, camera.Position.z);
-        //glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 
         // Pass them to the shaders
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));

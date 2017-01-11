@@ -17,7 +17,7 @@ public:
     virtual void render(glm::vec3 position);
 
 protected:
-    std::vector<Light*> light;
+    std::vector<Light*> lights;
     GLuint vao;
     GLuint vbo;
 };

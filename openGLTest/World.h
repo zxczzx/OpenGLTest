@@ -4,6 +4,7 @@
 #include <chrono>
 #include <vector>
 #include "Shapes/Cube.h"
+#include "Light/Light.h"
 
 class World 
 {
@@ -17,6 +18,7 @@ public:
 
 private:
     std::vector<glm::vec3> cubePositions;
+    std::vector<glm::vec3> lightPositions;
     std::chrono::time_point<std::chrono::steady_clock> t_start;
 
     glm::vec3 cameraPos;
@@ -28,6 +30,7 @@ private:
 
     Camera camera;
     std::vector<Cube*> cube;
+    std::vector<Light*> lights;
 
     GLfloat yaw;
     GLfloat pitch;

@@ -6,7 +6,7 @@
 class CubeTextured : public Cube
 {
 public:
-    CubeTextured();
+    CubeTextured(std::vector<Light*> lightsVector);
     ~CubeTextured();
 
     void update() override;
