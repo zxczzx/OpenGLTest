@@ -149,36 +149,54 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="CubeLight.cpp" />
-    <ClCompile Include="CubePlain.cpp" />
-    <ClCompile Include="CubeTextured.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Light\DirectionalLight.cpp" />
+    <ClCompile Include="Light\Light.cpp" />
+    <ClCompile Include="Light\PointLight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="Shapes\Cube.cpp" />
+    <ClCompile Include="Shapes\CubeLight.cpp" />
+    <ClCompile Include="Shapes\CubePlain.cpp" />
+    <ClCompile Include="Shapes\CubeTextured.cpp" />
+    <ClCompile Include="Shapes\Shapes.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CubePlainFragment.glsl" />
-    <None Include="CubePlainVertex.glsl" />
-    <None Include="CubeTextureFragment.glsl" />
-    <None Include="LampFragment.glsl" />
-    <None Include="LampVertex.glsl" />
-    <None Include="CubeTextureVertex.glsl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="CubeLight.h" />
-    <ClInclude Include="CubePlain.h" />
-    <ClInclude Include="CubeTextured.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Light\DirectionalLight.h" />
+    <ClInclude Include="Light\Light.h" />
+    <ClInclude Include="Light\PointLight.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Shapes.h" />
+    <ClInclude Include="Shapes\Cube.h" />
+    <ClInclude Include="Shapes\CubeLight.h" />
+    <ClInclude Include="Shapes\CubePlain.h" />
+    <ClInclude Include="Shapes\CubeTextured.h" />
+    <ClInclude Include="Shapes\Shapes.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\CubePlainFragment.glsl" />
+    <None Include="Shaders\CubePlainVertex.glsl" />
+    <None Include="Shaders\CubeTextureFragment.glsl" />
+    <None Include="Shaders\CubeTextureVertex.glsl" />
+    <None Include="Shaders\LampFragment.glsl" />
+    <None Include="Shaders\LampVertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\3qtr_render.png" />
+    <Image Include="Textures\container.jpg" />
+    <Image Include="Textures\container2.png" />
+    <Image Include="Textures\container2_specular.png" />
+    <Image Include="Textures\lighting_maps_specular_color.png" />
+    <Image Include="Textures\matrix.jpg" />
+    <Image Include="Textures\screenshot000.png" />
+    <Image Include="Textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

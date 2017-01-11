@@ -48,6 +48,13 @@ CubeTextured::CubeTextured() :
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
+
+    pointLightPositions = {
+        glm::vec3(0.7f,  0.2f,  2.0f),
+        glm::vec3(2.3f, -3.3f, -4.0f),
+        glm::vec3(-4.0f,  2.0f, -12.0f),
+        glm::vec3(0.0f,  0.0f, -3.0f)
+    };
     
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -68,7 +75,7 @@ CubeTextured::CubeTextured() :
     int width, height;
     // Diffuse map
     glGenTextures(1, &texture);
-    unsigned char* image = SOIL_load_image("container2.png", &width, &height, 0, SOIL_LOAD_RGB);
+    unsigned char* image = SOIL_load_image("Textures/container2.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -79,7 +86,7 @@ CubeTextured::CubeTextured() :
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
     // Specular map
     glGenTextures(1, &specularMap);
-    image = SOIL_load_image("container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
+    image = SOIL_load_image("Textures/container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, specularMap);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -100,22 +107,61 @@ CubeTextured::~CubeTextured()
     glDeleteBuffers(1, &vbo);
 }
 
+void CubeTextured::update()
+{
+}
+
 void CubeTextured::render(glm::vec3 position)
 {
-    // Set material properties
-    glUniform1i(glGetUniformLocation(shader->program, "material.diffuse"), 0);
-    glUniform1i(glGetUniformLocation(shader->program, "material.specular"), 1);
     glUniform1f(glGetUniformLocation(shader->program, "material.shininess"), 32.0f);
-
-    // Set lights properties
-    glUniform3f(glGetUniformLocation(shader->program, "light.ambient"), 0.2f, 0.2f, 0.2f);
-    glUniform3f(glGetUniformLocation(shader->program, "light.diffuse"), 0.5f, 0.5f, 0.5f);
-    glUniform3f(glGetUniformLocation(shader->program, "light.specular"), 1.0f, 1.0f, 1.0f);
-
-    // Set attenuation properties
-    glUniform1f(glGetUniformLocation(shader->program, "light.constant"), 1.0f);
-    glUniform1f(glGetUniformLocation(shader->program, "light.linear"), 0.09f);
-    glUniform1f(glGetUniformLocation(shader->program, "light.quadric"), 0.032f);
+    // Directional light
+    glUniform3f(glGetUniformLocation(shader->program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
+    glUniform3f(glGetUniformLocation(shader->program, "dirLight.ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(shader->program, "dirLight.diffuse"), 0.4f, 0.4f, 0.4f);
+    glUniform3f(glGetUniformLocation(shader->program, "dirLight.specular"), 0.5f, 0.5f, 0.5f);
+    // Point light
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[0].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[0].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[0].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[0].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[0].linear1"), 0.09);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[0].quadratic"), 0.032);
+    // Point light
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[1].position"), pointLightPositions[1].x, pointLightPositions[1].y, pointLightPositions[1].z);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[1].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[1].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[1].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[1].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[1].linear1"), 0.09);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[1].quadratic"), 0.032);
+    // Point light
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[2].position"), pointLightPositions[2].x, pointLightPositions[2].y, pointLightPositions[2].z);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[2].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[2].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[2].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[2].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[2].linear1"), 0.09);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[2].quadratic"), 0.032);
+    // Point light
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[3].position"), pointLightPositions[3].x, pointLightPositions[3].y, pointLightPositions[3].z);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[3].ambient"), 0.05f, 0.05f, 0.05f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[3].diffuse"), 0.8f, 0.8f, 0.8f);
+    glUniform3f(glGetUniformLocation(shader->program, "pointLights[3].specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[3].constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[3].linear1"), 0.09);
+    glUniform1f(glGetUniformLocation(shader->program, "pointLights[3].quadratic"), 0.032);
+    // SpotLight
+    /*glUniform3f(glGetUniformLocatioshader->program, "spotLight.position"), camera.Position.x, camera.Position.y, camera.Position.z);
+    glUniform3f(glGetUniformLocation(shader->program, "spotLight.direction"), camera.Front.x, camera.Front.y, camera.Front.z);
+    glUniform3f(glGetUniformLocation(shader->program, "spotLight.ambient"), 0.0f, 0.0f, 0.0f);
+    glUniform3f(glGetUniformLocation(shader->program, "spotLight.diffuse"), 1.0f, 1.0f, 1.0f);
+    glUniform3f(glGetUniformLocation(shader->program, "spotLight.specular"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "spotLight.constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shader->program, "spotLight.linear"), 0.09);
+    glUniform1f(glGetUniformLocation(shader->program, "spotLight.quadratic"), 0.032);
+    glUniform1f(glGetUniformLocation(shader->program, "spotLight.cutOff"), glm::cos(glm::radians(12.5f)));
+    glUniform1f(glGetUniformLocation(shader->program, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));*/
 
 
     GLint modelLoc = glGetUniformLocation(shader->program, "model");
@@ -142,5 +188,5 @@ void CubeTextured::render(glm::vec3 position)
 
 void CubeTextured::setup()
 {
-    shader = new Shader("CubeTextureVertex.glsl", "CubeTextureFragment.glsl");
+    shader = new Shader("Shaders/CubeTextureVertex.glsl", "Shaders/CubeTextureFragment.glsl");
 }

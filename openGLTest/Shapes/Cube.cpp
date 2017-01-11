@@ -13,6 +13,10 @@ Cube::~Cube()
 }
 
 
+void Cube::update()
+{
+}
+
 void Cube::render(glm::vec3 position)
 {
 }

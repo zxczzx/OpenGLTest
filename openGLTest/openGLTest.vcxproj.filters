@@ -33,29 +33,33 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubeTextured.cpp">
+    <ClCompile Include="Light\DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubePlain.cpp">
+    <ClCompile Include="Light\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubeLight.cpp">
+    <ClCompile Include="Light\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LampVertex.glsl" />
-    <None Include="LampFragment.glsl" />
-    <None Include="CubeTextureVertex.glsl" />
-    <None Include="CubeTextureFragment.glsl" />
-    <None Include="CubePlainVertex.glsl" />
-    <None Include="CubePlainFragment.glsl" />
+    <ClCompile Include="Shapes\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\CubeLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\CubePlain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\CubeTextured.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\Shapes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -73,20 +77,66 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeTextured.h">
+    <ClInclude Include="Light\DirectionalLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubePlain.h">
+    <ClInclude Include="Light\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeLight.h">
+    <ClInclude Include="Light\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shapes\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\CubeLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\CubePlain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\CubeTextured.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\Shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\CubePlainFragment.glsl" />
+    <None Include="Shaders\CubePlainVertex.glsl" />
+    <None Include="Shaders\CubeTextureFragment.glsl" />
+    <None Include="Shaders\CubeTextureVertex.glsl" />
+    <None Include="Shaders\LampFragment.glsl" />
+    <None Include="Shaders\LampVertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\3qtr_render.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\container.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\container2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\container2_specular.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\lighting_maps_specular_color.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\matrix.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\screenshot000.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

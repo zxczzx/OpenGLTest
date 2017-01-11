@@ -8,6 +8,7 @@ public:
     CubePlain();
     ~CubePlain();
 
+    void update() override;
     void render(glm::vec3 position) override;
     void setup() override;
 

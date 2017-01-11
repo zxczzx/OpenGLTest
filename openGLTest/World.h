@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include <chrono>
 #include <vector>
-#include "Cube.h"
+#include "Shapes/Cube.h"
 
 class World 
 {

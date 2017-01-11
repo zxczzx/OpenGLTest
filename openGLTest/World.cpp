@@ -1,9 +1,9 @@
 #include "World.h"
 #include <SOIL.h>
 #include <map>
-#include "CubeLight.h"
-#include "CubePlain.h"
-#include "CubeTextured.h"
+#include "Shapes/CubeLight.h"
+#include "Shapes/CubePlain.h"
+#include "Shapes/CubeTextured.h"
 
 
 World::World() :
